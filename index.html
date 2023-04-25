@@ -13,24 +13,51 @@
 </head>
 <body>
     <div class="parent">
-        <div class="div1"> computer bet </div>
-        <div class="div2"> computer call</div>
-        <div id="div3"> C1</div>
-        <div class="div4"> C2</div>
-        <div class="div5"> C3</div>
-        <div class="div6"> C4</div>
-        <div class="div7"> C5</div>
-        <div class="div8"> Player bet</div>
-        <div class="div9"> Player call</div>
-        <div class="div10"> P1</div>
-        <div class="div11"> P2</div>
-        <div class="div12"> P3</div>
-        <div class="div13"> P4</div>
-        <div class="div14"> P5</div>
-        <div class="div15"> Pot</div>
+        <!-- Computer Function -->
+        <div class="c_control" id = "div_c_bet"> computer bet <button id="c_bet"> C Bet</button> </div>
+        <div class="c_control" id = "div_c_call"> computer bet <button id="c_call"> C Call</button> </div>
+        <div class="c_control" id = "div_c_fold"> computer bet <button id="c_fold"> C fold</button> </div>
+
+        <div class="computer_card" id="c1">
+            <img src="images\blue.svg" alt="">
+        </div>
+        <div class="computer_card" id="c2"> 
+            <img src="images\blue.svg" alt="">
+        </div>
+        <div class="computer_card" id="c3">
+            <img src="images\blue.svg" alt="">
+        </div>
+        <div class="computer_card" id="c4">
+            <img src="images\blue.svg" alt="">
+        </div>
+        <div class="computer_card" id="c5">
+            <img src="images\blue.svg" alt="">
+        </div>
+        <!-- Div Player Function -->
+        <div class="p_control" id = "div_p_bet"> player bet <button id="p_bet"> P Bet</button> </div>
+        <div class="p_control" id = "div_p_call"> player call <button id="p_call"> P Call</button> </div>
+        <div class="p_control" id = "div_p_fold"> player fold <button id="p_fold"> P fold</button> </div>
+
+        <div class="player_card" id = 'p1'>
+            <img src="images\blue.svg" alt="">
+        </div>
+        <div class="player_card" id = 'p2'>
+            <img src="images\blue.svg" alt="">
+        </div>
+        <div class="player_card" id = 'p3'>
+            <img src="images\blue.svg" alt="">
+        </div>
+        <div class="player_card" id = 'p4'>
+            <img src="images\blue.svg" alt="">
+        </div>
+        <div class="player_card" id = 'p5'>
+            <img src="images\blue.svg" alt="">
+        </div>
+        <div class="div15" id = "pot"> Pot</div>
         <div class="div16"> Face Down Card</div>
-        <div class="div17"> Player Purse</div>
-        <div class="div18"> Computer Purse</div>
+        <div class="div17" id="player_purse"> Player Purse</div>
+        <div class="div18" id="computer_purse"> Computer Purse</div>
+        
         <div class="div19"> <button id="new game">New Game</button></div>
         <div class="div20"> <button id="debug game">Bebug State</button></div>
         </div>
