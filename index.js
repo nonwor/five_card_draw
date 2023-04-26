@@ -197,6 +197,7 @@ const hidePlayerFunction = () =>{
 
 // This is where we init a new game, by making a deck 
 const initNewGame = () => {
+    console.clear();
     console.log("New Game Button Clicked");
     let newDeck = new Deck();
     newDeck.shuffle();
@@ -263,7 +264,7 @@ const call=()=>{
     console.log("call");
 
     //Match bet, what sieries are we in?
-    if(game.series===0){
+    if(game.series==0){
         //Match bet & update money
         if(game.turn == 0){
             game.pot += betAmount;
@@ -275,6 +276,23 @@ const call=()=>{
             game.computerPurse -= betAmount;
         }
         render();
+
+        // Advance series to 1
+            // Disable
+            //Allow switch
+        game.series = 1;
+        for(let element of comp_func){
+            element.disabled = true;
+        }
+        for(let element of player_func){
+            element.disabled = true;
+        }
+        
+        
+        //
+
+
+
     }
     //Disable all buttons functions
 
