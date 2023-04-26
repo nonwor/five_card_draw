@@ -43,22 +43,23 @@ let player;
 let betAmount = 20;
 
 class gamestate{
-    constructor(computerHand, playerHand){
+    constructor(computerHand, playerHand, extraCards){
         this.computerHand = computerHand;
         this.playerHand = playerHand;
+        this.extraCards = extraCards;
         this.pot = 0;
         this.turn = 0; //0 = player, 1 = computer
         this.computerPurse = 1000;
         this.playerPurse = 1000;
         this.round = 0;
-        this.series = 0; 
+        this.series = 0;
         /*
-        0 = deal
-        1 = pre-switch bet
-        2 = switch option
-        3 = post-switch bet
-        4 = done
+        0 = pre-switch bet
+        1 = switch option
+        2 = post-switch bet
+        3 = Conclusion
         */
+        this.start = 0; //0 = player start, 1 = computer start
     }
     get all(){
         console.log("Computer Hand");
@@ -197,7 +198,8 @@ const initNewGame = () => {
     }
     console.log(computerhand);
     console.log(playerHand);
-    game = new gamestate(computerhand, playerHand);
+    console.log(newDeck.cards.length);
+    game = new gamestate(computerhand, playerHand, newDeck);
     render();
     computer = new computerstate(computerhand, game.computerPurse);
     player = new computerstate(playerHand, game.playerPurse);
@@ -210,9 +212,11 @@ const initNewGame = () => {
     if(whoStart === 0){
         hideComputerFunction();
         game.turn = 0;
+        game.start = 0;
     } else{
         hidePlayerFunction();
         game.turn = 1;
+        game.start = 1;
     }
     //
 
@@ -224,13 +228,80 @@ const getData=()=>{
 
 const bet=()=>{
     console.log("bet");
-    //
+    //Bet action
+    game.pot +=  betAmount;
+    console.log(game.turn);
+    
+    if(game.turn == 0){
+        player.money -= betAmount;
+        game.playerPurse -= betAmount;
+    } else {
+        computer.money -= betAmount;
+        game.computerPurse -= betAmount;
+    }
+
+    switchTurn();
+    render();
+
+    
+    //Call action -> switch state
+    //Update pot, and purse, -> get the game to next state
+
 }
 
 const call=()=>{    
     console.log("call");
 }
 
+//After won or lose we deal a new hand
+//New deck, shuffle, deal, 
+const newHand =() =>{
+    let newDeck = new Deck();
+    newDeck.shuffle();
+
+    let computerhand = [];
+    let playerHand = [];
+    for (let i = 0; i < 5; i++){
+        computerhand.push(newDeck.deal());
+        playerHand.push(newDeck.deal());
+    }
+    //Reset hands
+    game.extraCards = newDeck;
+    game.computerHand = computerhand;
+    game.playerHand = playerHand;
+
+    player.hand = playerHand;
+    computer.hand = computerhand;
+
+    //Switch who starts
+    switchStart();
+}
+
+const switchStart = () =>{
+    //This is player starts
+    if(game.start == 0){
+        hidePlayerFunction();
+        game.turn = 1;
+        game.start = 1;
+    } else {
+        hideComputerFunction();
+        game.turn = 0;
+        game.start = 0;
+    }
+
+}
+const switchTurn=()=>{
+    //player turn
+    if(game.turn == 0){
+        game.turn = 1;
+        hidePlayerFunction();
+    } else {
+        game.turn = 0;
+        hideComputerFunction();
+    }
+}
+
+//When a fold happens we reset the pot and update the bank.
 const fold=()=>{
     console.log("fold");
     console.log(game.turn);
@@ -247,10 +318,10 @@ const fold=()=>{
     game.pot = 0;
     render();
     ante();
-    ///
+    // New hands
+    // game.
+    newHand();
     render();
-
-
 }
 
 newGame.addEventListener("click", initNewGame);
