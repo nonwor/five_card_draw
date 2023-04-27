@@ -56,6 +56,7 @@ class gamestate{
         this.round = 0;
         this.series = 0;
         this.doneSwitch = [0,0];
+        this.betMade  = false;
         /*
         0 = pre-switch bet
         1 = switch option
@@ -125,6 +126,17 @@ class computerstate{
 }
 
 //DOM
+
+const removeHighLightBoarder = () =>{
+    let compcards = document.getElementsByClassName("computer_card");
+    for(let c of compcards){
+        c.style = "boarder: ";
+    }
+    let playercards = document.getElementsByClassName("player_card");
+    for(let p of playercards){
+        p.style = "boarder: ";
+    }
+}
 
 const render = () =>{
     
@@ -257,14 +269,7 @@ const initNewGame = () => {
     //
 
     //Remove highlights from cards
-    let compcards = document.getElementsByClassName("computer_card");
-    for(let c of compcards){
-        c.style = "boarder: ";
-    }
-    let playercards = document.getElementsByClassName("player_card");
-    for(let p of playercards){
-        p.style = "boarder: ";
-    }
+    removeHighLightBoarder();
     // compcards.style = "border: thick double yellow";
 
 }
@@ -286,7 +291,7 @@ const bet=()=>{
         computer.money -= betAmount;
         game.computerPurse -= betAmount;
     }
-
+    game.betMade = true;
     switchTurn();
     render();
 
@@ -323,6 +328,18 @@ const switchCard=(event)=>{
 
 const call=()=>{    
     console.log("call");
+
+    //We can do a call at the start of the betting round, this is a "Stay".
+    if(game.betMade == false){
+        //switch turn 
+        if (game.turn==0){
+            hidePlayerFunction();
+        }else{
+            hideComputerFunction();
+        }
+        game.betMade = true;
+        return; // just switch only
+    } 
 
     //Match bet, what sieries are we in?
     if(game.series==0){
@@ -395,7 +412,9 @@ const call=()=>{
 
     //player call -> computer starts bet 
 
-    //If we are at the end -> reveal cards -> look up hands. 
+    //If we are at the end -> reveal cards -> look up hands.
+    console.log("here is the final call, so now we look up hand.")
+    
 }
 
 //After won or lose we deal a new hand
@@ -467,6 +486,7 @@ const fold=()=>{
     // New hands
     // game.
     newHand();
+    removeHighLightBoarder();
     render();
 }
 
@@ -490,6 +510,7 @@ const computerFinsihedSwap = ()=>{
     game.doneSwitch[0] = 1;
     if(game.isDoneSwitch()){
         //computer call so person start bet
+        game.betMade = false;
         if(game.turn == 0){
             hideComputerFunction();
         }else{
@@ -516,6 +537,7 @@ const  playerFinsihedSwa = ()=>{
     //Check for both player completed the switch
     game.doneSwitch[1] = 1;
     if(game.isDoneSwitch()){
+        game.betMade = false;
         if(game.turn == 0){
             hideComputerFunction();
         }else{
