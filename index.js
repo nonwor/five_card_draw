@@ -34,6 +34,8 @@ let player_func = [document.getElementById("p_bet"),
                 document.getElementById("p_fold")
                 ];
 
+let computer_finish_swap = document.getElementById("c_done_swap");
+let player_finish_swap = document.getElementById("p_done_swap");
 
 //class gamestate
 let game;
@@ -53,6 +55,7 @@ class gamestate{
         this.playerPurse = 1000;
         this.round = 0;
         this.series = 0;
+        this.doneSwitch = [0,0];
         /*
         0 = pre-switch bet
         1 = switch option
@@ -80,6 +83,15 @@ class gamestate{
             console.error("player purse: ", this.playerPurse);
         }
     }
+    isDoneSwitch(){
+        console.log(this.doneSwitch);
+
+        if (this.doneSwitch[0] == 1 & this.doneSwitch[1] == 1){
+            return true;
+        } else{
+            return false;
+        }
+    }
 }
 
 class playerstate{
@@ -89,6 +101,12 @@ class playerstate{
         this.action = 0; //0 = bet, 1 = call, 2 = fold
         this.won = 0; //0
     }
+
+    switchCard(cardPos, card){
+        console.log("before switch:", this.hand);
+        this.hand[cardPos] = card;
+        console.log("after switch:", this.hand);
+    }
 }
 
 class computerstate{
@@ -97,6 +115,12 @@ class computerstate{
         this.money = money;
         this.action = 0;
         this.won = 0;
+    }
+
+    switchCard(cardPos, card){
+        console.log("before switch:", this.hand);
+        this.hand[cardPos] = card;
+        console.log("after switch:", this.hand);
     }
 }
 
@@ -232,6 +256,17 @@ const initNewGame = () => {
     }
     //
 
+    //Remove highlights from cards
+    let compcards = document.getElementsByClassName("computer_card");
+    for(let c of compcards){
+        c.style = "boarder: ";
+    }
+    let playercards = document.getElementsByClassName("player_card");
+    for(let p of playercards){
+        p.style = "boarder: ";
+    }
+    // compcards.style = "border: thick double yellow";
+
 }
 
 const getData=()=>{
@@ -260,6 +295,32 @@ const bet=()=>{
 
 }
 
+const switchCard=(event)=>{
+    console.log("new card", event.target.id);
+    let newCard = game.extraCards.deal();
+    console.log(computer.hand);
+    console.log(newCard);
+    event.target.style.visibility = "hidden";
+
+    // event.target.parentElement.style = "border: solid green";
+    // event.target.id "c3_refresh"
+    let cardId = event.target.id;
+    let position = parseInt(cardId[1]);
+    let who = cardId[0];
+    if(who == 'c'){
+        //change computer
+        computer.switchCard(position, newCard);
+    } else {
+        player.switchCard(position, newCard);
+    }
+    // console.log(computer.hand);
+    
+    //We need to let the other play know what how many cards are switched. 
+    event.target.parentElement.style = "border: thick double blue";
+    
+
+}
+
 const call=()=>{    
     console.log("call");
 
@@ -270,10 +331,12 @@ const call=()=>{
             game.pot += betAmount;
             player.money -= betAmount;
             game.playerPurse -= betAmount;
+            game.turn = 1;
         } else {
             game.pot += betAmount;
             computer.money -= betAmount;
             game.computerPurse -= betAmount;
+            game.turn = 0;
         }
         render();
 
@@ -288,11 +351,41 @@ const call=()=>{
             element.disabled = true;
         }
         
-        
+        //Display New buttons
+        //  <button class= "redraw_button" id="c2_refresh"> New</button>
+        for(let i = 0; i<5 ;i++){
+            // c_hand[i].innerHTML = '';
+            let elem = document.createElement("button");
+            elem.setAttribute("class","c_redraw_button");
+            let bvar = i.toString()
+            elem.setAttribute("id","c"+bvar+"_refresh");
+            elem.textContent = "New";
+            // elem.onclick="this.hidden=true";
+            //Add event listener on element
+            elem.addEventListener("click", switchCard);
+           
+            c_hand[i].appendChild(elem);
+            
+        }
+
+        for(let i = 0; i<5 ;i++){
+            // c_hand[i].innerHTML = '';
+            let elem = document.createElement("button");
+            elem.setAttribute("class","p_redraw_button");
+            let bvar = i.toString()
+            elem.setAttribute("id","p"+bvar+"_refresh");
+            elem.textContent = "New";
+            // elem.onclick="this.hidden=true";
+            //Add event listener on element
+            elem.addEventListener("click", switchCard);
+           
+            p_hand[i].appendChild(elem);
+            
+        }
+
+        computer_finish_swap.style.display = "block";
+        player_finish_swap.style.display = "block";
         //
-
-
-
     }
     //Disable all buttons functions
 
@@ -377,6 +470,60 @@ const fold=()=>{
     render();
 }
 
+const computerFinsihedSwap = ()=>{
+    computer_finish_swap.style.display = "none";
+    let comp_new_button = document.getElementsByClassName("c_redraw_button");
+    for(let button of comp_new_button){
+        button.style.visibility = "hidden"
+    }
+    // comp_new_button.style.visibility = "hidden";
+    //Render card just for the computer hand
+    for(let i = 0; i<5 ;i++){
+        c_hand[i].innerHTML = '';
+        let elem = document.createElement("img");
+        let source1 = game.getcomputerHand[i].imageLink;
+        elem.setAttribute("src","./images/" + source1);
+        c_hand[i].appendChild(elem);
+    }
+    //Check for both player completed the switch
+    // console.log(game.doneSwitch);
+    game.doneSwitch[0] = 1;
+    if(game.isDoneSwitch()){
+        //computer call so person start bet
+        if(game.turn == 0){
+            hideComputerFunction();
+        }else{
+            hidePlayerFunction();
+        }
+    }
+}
+
+const  playerFinsihedSwa = ()=>{
+    player_finish_swap.style.display = "none";
+
+    let comp_new_button = document.getElementsByClassName("p_redraw_button");
+    for(let button of comp_new_button){
+        button.style.visibility = "hidden"
+    }
+     //Render card just for the player hand
+    for(let i = 0; i<5 ;i++){
+        p_hand[i].innerHTML = '';
+        let elem = document.createElement("img");
+        let source1 = game.playerHand[i].imageLink;
+        elem.setAttribute("src","./images/" + source1);
+        p_hand[i].appendChild(elem);
+    }
+    //Check for both player completed the switch
+    game.doneSwitch[1] = 1;
+    if(game.isDoneSwitch()){
+        if(game.turn == 0){
+            hideComputerFunction();
+        }else{
+            hidePlayerFunction();
+        }
+    }
+}
+
 newGame.addEventListener("click", initNewGame);
 debugGame.addEventListener("click", getData);
 
@@ -387,3 +534,6 @@ comp_func[2].addEventListener("click", fold);
 player_func[0].addEventListener("click", bet);
 player_func[1].addEventListener("click", call);
 player_func[2].addEventListener("click", fold);
+
+computer_finish_swap.addEventListener("click", computerFinsihedSwap)
+player_finish_swap.addEventListener("click", playerFinsihedSwa)

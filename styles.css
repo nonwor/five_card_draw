@@ -4,6 +4,9 @@
     /* grid-template-rows: repeat(11, 3fr); */
     grid-column-gap: 5px;
     grid-row-gap: 5px;
+    background-color: rgb(78, 106, 78);
+    font-size:  18px;
+    color:antiquewhite;
 }
 /*----------------Computer ------------------  */
 #div_c_bet { grid-area: 2 / 4 / 3 / 5; }
@@ -23,7 +26,7 @@
     max-height: 100%;
 }
 
-.redraw_button{
+.c_redraw_button{
     margin-top: 6px;
 }
 #c1 {grid-area: 3 / 3 / 4 / 4;}
@@ -32,14 +35,18 @@
 #c4 { grid-area: 3 / 6 / 4 / 7; }
 #c5 { grid-area: 3 / 7 / 4 / 8; }
 
-.done_swap{
+.done_swap_div{
     grid-area: 3/8/4/9;
     display: flex;
     align-items: center;
     justify-content: center;
 }
-.done_swap >*{
+.p_redraw_button >*{
     max-height: 30%;
+    margin-top: 6px;
+}
+#c_done_swap{
+    display:  none;
 }
 
 /*---------------- Player ------------------  */
@@ -63,6 +70,22 @@
 #p3 { grid-area: 9 / 5 / 10 / 6; }
 #p4 { grid-area: 9 / 6 / 10 / 7; }
 #p5 { grid-area: 9 / 7 / 10 / 8; }
+
+.done_swap_div_player{
+    grid-area: 9/8/10/9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.done_swap >*{
+    max-height: 30%;
+    display: none;
+}
+
+#p_done_swap{
+    display:  none;
+}
+
 .div15 { grid-area: 6 / 3 / 7 / 4; }
 .div16 { grid-area: 6 / 1 / 8 / 2; }
 
