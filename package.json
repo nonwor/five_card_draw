@@ -1,3 +1,6 @@
 {
-    "type": "module"
+    "type": "module",
+    "dependencies": {
+        "pokersolver": "^2.1.4"
+    }
 }
