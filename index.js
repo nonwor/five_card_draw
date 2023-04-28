@@ -1,5 +1,7 @@
 //Need to make a deck
 import {Card, Deck} from './deck.js';
+import { whoWon } from './handSolve.js';
+// import whoWon from './handsolve';
 
 let newGame = document.getElementById("new game");
 let debugGame = document.getElementById("debug game");
@@ -276,9 +278,11 @@ const initNewGame = () => {
 
 const getData=()=>{
     game.all;
+    whoWon(computer.hand, player.hand);
 }
 
 const bet=()=>{
+    
     console.log("bet");
     //Bet action
     game.pot +=  betAmount;
@@ -343,6 +347,7 @@ const call=()=>{
 
     //Match bet, what sieries are we in?
     if(game.series==0){
+        game.betMade = false;
         //Match bet & update money
         if(game.turn == 0){
             game.pot += betAmount;
@@ -360,7 +365,6 @@ const call=()=>{
         // Advance series to 1
             // Disable
             //Allow switch
-        game.series = 1;
         for(let element of comp_func){
             element.disabled = true;
         }
@@ -371,6 +375,7 @@ const call=()=>{
         //Display New buttons
         //  <button class= "redraw_button" id="c2_refresh"> New</button>
         for(let i = 0; i<5 ;i++){
+            console.log(i);
             // c_hand[i].innerHTML = '';
             let elem = document.createElement("button");
             elem.setAttribute("class","c_redraw_button");
@@ -380,7 +385,7 @@ const call=()=>{
             // elem.onclick="this.hidden=true";
             //Add event listener on element
             elem.addEventListener("click", switchCard);
-           
+    
             c_hand[i].appendChild(elem);
             
         }
@@ -403,23 +408,41 @@ const call=()=>{
         computer_finish_swap.style.display = "block";
         player_finish_swap.style.display = "block";
         //
+
     }
     //Disable all buttons functions
 
     //popup switch functions for both player
     //click pop up icons to switch
     //pop up icon to be done
+    
 
     //player call -> computer starts bet 
+    if(game.series==1){
+        console.log("here is the final call, so now we look up hand.")
+        let result = whoWon(computer.hand, player.hand);
+        console.log(result)
 
-    //If we are at the end -> reveal cards -> look up hands.
-    console.log("here is the final call, so now we look up hand.")
+        if(result.winner == "computer"){
+            computer.money += game.pot;
+            game.computerPurse += game.pot;
+        }else{
+            player.money += game.pot;
+        game.playerPurse += game.pot;
+        }
+
+        game.pot = 0;
+        newHand();
+        ante();
+        render();
+    }
     
 }
 
 //After won or lose we deal a new hand
 //New deck, shuffle, deal, 
 const newHand =() =>{
+    
     let newDeck = new Deck();
     newDeck.shuffle();
 
@@ -437,6 +460,11 @@ const newHand =() =>{
     player.hand = playerHand;
     computer.hand = computerhand;
 
+    //Reset game states
+    game.series = 0;
+    game.doneSwitch = [0,0];
+    game.betMade  = false;
+    
     //Switch who starts
     switchStart();
 }
@@ -475,13 +503,14 @@ const fold=()=>{
         //player fold
         game.computerPurse += game.pot;
         computer.money += game.pot;
+        
     } else {
         game.playerPurse += game.pot;
         player.money += game.pot;
     }
     //Reset pot to zero
     game.pot = 0;
-    render();
+    // render();
     ante();
     // New hands
     // game.
@@ -510,6 +539,7 @@ const computerFinsihedSwap = ()=>{
     game.doneSwitch[0] = 1;
     if(game.isDoneSwitch()){
         //computer call so person start bet
+        game.series = 1;
         game.betMade = false;
         if(game.turn == 0){
             hideComputerFunction();
@@ -537,6 +567,7 @@ const  playerFinsihedSwa = ()=>{
     //Check for both player completed the switch
     game.doneSwitch[1] = 1;
     if(game.isDoneSwitch()){
+        game.series = 1;
         game.betMade = false;
         if(game.turn == 0){
             hideComputerFunction();
