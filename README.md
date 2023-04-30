@@ -8,6 +8,7 @@ texas holdem, but you are given 5 cards at the beginning, then you bet, then you
  
 ## Screenshots
 ![picture alt](game_init.PNG "Game Initialization")
+![picture alt](game_1.PNG "Game Initialization")
 
 ## Features
 FCD is implement with the bet, call, and fold function. This logic is applicable to the standard poker game. Inaddition, card swap is nice to have for future card game. 
