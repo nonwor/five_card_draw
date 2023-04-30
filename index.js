@@ -39,6 +39,8 @@ let player_func = [document.getElementById("p_bet"),
 let computer_finish_swap = document.getElementById("c_done_swap");
 let player_finish_swap = document.getElementById("p_done_swap");
 
+let win_message = document.getElementById("win_message");
+
 //class gamestate
 let game;
 let computer;
@@ -430,10 +432,17 @@ const call=()=>{
             player.money += game.pot;
         game.playerPurse += game.pot;
         }
+        //Display Win Message here...
+
+        win_message.innerHTML = "";
+        let resultMessage = document.createElement("p");
+        resultMessage.textContent = result.winner+ " won the pot with "+ result.message;
+        win_message.appendChild(resultMessage);
 
         game.pot = 0;
         newHand();
         ante();
+        removeHighLightBoarder();
         render();
     }
     

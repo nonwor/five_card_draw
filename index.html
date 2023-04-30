@@ -15,9 +15,27 @@
 <body>
     <div class="parent">
         <!-- Computer Function -->
-        <div class="c_control" id = "div_c_bet"> computer bet <button id="c_bet"> C Bet</button> </div>
-        <div class="c_control" id = "div_c_call"> computer bet <button id="c_call"> C Call</button> </div>
-        <div class="c_control" id = "div_c_fold"> computer bet <button id="c_fold"> C fold</button> </div>
+        <div class="game_message" id ="game_message">
+            <p>
+                <ol> Game Rules (Std Poker scheme)
+                    <li>Draw 5 cards</li>
+                    <li>Bet</li>
+                    <li>Exchange up to 5 cards</li>
+                    <li>Bet</li>
+                    <li>Reveal Card</li>
+                </ol>
+            </p>
+            <p>Card images: github.com/jonathanpenaloa/war-card-game <br>
+                Poker hand solver: npmjs.com/package/pokersolver
+                <!-- <ul>Credits:
+                    <li>Card images: github.com/jonathanpenaloa/war-card-game </li>
+                    <li>Poker hand solver: npmjs.com/package/pokersolver </li>
+                </ul> -->
+            </p>
+        </div>
+        <div class="c_control" id = "div_c_bet"> comp bet <button id="c_bet"> C Bet</button> </div>
+        <div class="c_control" id = "div_c_call"> comp call <button id="c_call"> C Call</button> </div>
+        <div class="c_control" id = "div_c_fold"> comp fold <button id="c_fold"> C fold</button> </div>
 
         <div class="computer_card" id="c1">
             <img src="images\blue.svg" alt="">
@@ -71,7 +89,8 @@
         </div>
 
         <div class="div15" id = "pot"> Pot</div>
-        <div class="div16"> Face Down Card</div>
+        <div class="win_indicator" id ="win_message"> Result</div>
+        <!-- <div class="div16"> Face Down Card</div> -->
         <div class="div17" id="player_purse"> Player Purse</div>
         <div class="div18" id="computer_purse"> Computer Purse</div>
         
