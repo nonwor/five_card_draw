@@ -18,5 +18,5 @@ This game is fully encapsulated and run the web browser.
 
 ## Credits
 
-Markup : * github.com/jonathanpenaloa/war-card-game
-Markup : * npmjs.com/package/pokersolver
+* github.com/jonathanpenaloa/war-card-game
+* npmjs.com/package/pokersolver
