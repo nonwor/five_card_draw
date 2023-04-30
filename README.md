@@ -7,7 +7,7 @@ We've decided to create the simpliest variant of poker which is the Five Card Dr
 texas holdem, but you are given 5 cards at the beginning, then you bet, then you can switch cards (if you deem applicable), then you bet the final round. FCD is in a sence an easier game because there are fewer betting rounds. But the game mechanics implementation is harder since the player can swap cards.
  
 ## Screenshots
-
+![picture alt](game_init.PNG "Game Initialization")
 
 ## Features
 FCD is implement with the bet, call, and fold function. This logic is applicable to the standard poker game. Inaddition, card swap is nice to have for future card game. 
