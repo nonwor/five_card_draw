@@ -173,7 +173,7 @@ const render = () =>{
     // render Computer Purse
     player_purse.innerHTML = '';
     let elemPP = document.createElement("p");
-    elemPP.textContent = "Computer Purse: " + game.playerPurse;
+    elemPP.textContent = "Player Purse: " + game.playerPurse;
     player_purse.appendChild(elemPP);
 
     // render pot
